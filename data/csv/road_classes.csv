@@ -1,0 +1,13 @@
+"id","road_class","feature_count","length_km"
+4,"residential",3645,220.370
+6,"service",423,34.141
+10,"trunk",159,19.184
+8,"tertiary",247,15.103
+12,"unknown",220,10.859
+1,"footway",60,9.967
+2,"living_street",93,4.071
+5,"secondary",21,1.562
+11,"unclassified",7,0.781
+3,"path",7,0.439
+9,"track",2,0.154
+7,"steps",4,0.089

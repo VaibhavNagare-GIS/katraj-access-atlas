@@ -1,0 +1,29 @@
+{
+  "source": "Uploaded study GeoJSON and exported PostGIS CSVs",
+  "method": "Static analysis geometry reproduced with Shapely/GEOS in EPSG:32643, checked against exported SQL results. Not a direct database export.",
+  "coordinate_precision": 7,
+  "features": {
+    "building-points": 14191,
+    "buildings-over-500m": 767,
+    "buildings": 14191,
+    "coverage": 1,
+    "roads-in-coverage": 4458,
+    "roads": 4888,
+    "stop-buffers": 148,
+    "stops": 148,
+    "ward": 1
+  },
+  "checks": {
+    "distance_bands_match_csv": true,
+    "mean_distance_matches_csv": true,
+    "coverage_area_matches_csv": true,
+    "covered_road_length_matches_csv": true
+  },
+  "limitations": [
+    "Historical 2017 study boundary",
+    "Straight-line distance, not walking distance",
+    "Stop inventory clipped to ward",
+    "No population or service frequency model"
+  ],
+  "database_ids": "Static building and road IDs are local source-order IDs, not asserted database primary keys."
+}

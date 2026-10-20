@@ -1,0 +1,2 @@
+"id","building_count","bus_stop_records","road_feature_count","buildings_within_500m","buildings_over_500m","mean_nearest_stop_distance_m","ward_area_km2","buffered_area_km2","buffered_area_percentage","total_mapped_road_length_km","road_length_in_coverage_km"
+1,14191,148,4888,13424,767,228.76,11.668,10.344,88.65,316.721,291.241
