@@ -1,0 +1,18 @@
+Katraj Access Atlas
+Copyright (c) 2026 Vaibhav Nagare
+
+Original application source and original documentation are licensed under MIT.
+See LICENSE.
+
+Third-party libraries, fonts, brand marks, source datasets and the supplied
+cartographic asset are not relicensed by the root MIT licence. Their original
+licences, attribution requirements and trademarks remain applicable.
+See docs/THIRD-PARTY.md and docs/DATA.md for the component register.
+
+Source-specific OpenCity redistribution terms and download dates have not
+been verified. The project MIT licence does not grant rights in those datasets.
+Confirm the source terms before public redistribution.
+
+Bundled components include MapLibre GL JS, Apache ECharts, Primer Octicons,
+Font Awesome brand icons, Archivo Black, IBM Plex Sans and IBM Plex Mono.
+The complete licence files for bundled components are retained alongside them.

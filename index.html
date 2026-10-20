@@ -1,0 +1,535 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta
+      name="description"
+      content="Explore building proximity to bus stops in Katraj-Dhankawadi, Pune. An interactive atlas of 14,191 buildings, 148 stops and mapped road coverage."
+    />
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob: https://tile.openstreetmap.org; connect-src 'self' https://tile.openstreetmap.org; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'none'"
+    />
+    <title>Katraj Access Atlas | Building proximity, Pune</title>
+    <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml" />
+    <link
+      rel="preload"
+      href="assets/fonts/archivo-black-400.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link rel="stylesheet" href="vendor/maplibre/maplibre-gl.css" />
+    <link rel="stylesheet" href="css/styles.css" />
+    <script defer src="vendor/maplibre/maplibre-gl.js"></script>
+    <script defer src="vendor/echarts/echarts.min.js"></script>
+    <script type="module" src="js/app.js"></script>
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="masthead">
+      <a class="wordmark" href="#top" aria-label="Katraj Access Atlas home"
+        ><span class="brand-symbol" aria-hidden="true">↗</span
+        ><span>KATRAJ<span class="brand-sub">ACCESS ATLAS</span></span></a
+      >
+      <nav aria-label="Main navigation">
+        <a href="#explore">Explore</a><a href="#numbers">Numbers</a><a href="#method">Method</a>
+      </nav>
+      <button class="motion-button" id="motion-toggle" aria-pressed="false">Motion: on</button>
+      <div class="reading-progress" aria-hidden="true"></div>
+    </header>
+    <main id="main">
+      <section class="hero section-pad" id="top" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="eyebrow">
+            <span class="square" aria-hidden="true"></span> PUNE / KATRAJ-DHANKAWADI
+          </p>
+          <h1 id="hero-title">HOW CLOSE<br />IS <span class="outline-word">CLOSE?</span></h1>
+          <p class="hero-deck">A building. A bus stop.<br />The distance between them.</p>
+          <div class="hero-actions">
+            <a class="button primary" href="#explore"
+              >Explore the map <span aria-hidden="true">↘</span></a
+            ><a class="text-link" href="#numbers">Read the numbers ↗</a>
+          </div>
+          <p class="micro">Straight-line proximity. Not walking distance.</p>
+        </div>
+        <div class="hero-visual" aria-label="Study-area preview and key result">
+          <div class="visual-top mono">
+            <span>01 / THE BIG PICTURE</span><span>2017 STUDY BOUNDARY</span>
+          </div>
+          <div class="hero-map-frame">
+            <div
+              id="hero-atlas"
+              role="img"
+              aria-label="Study-area map with building distance classes and street context"
+            ></div>
+            <span class="hero-north mono" aria-hidden="true">N ↑</span>
+            <p id="hero-map-status" class="hero-map-status" role="status" hidden></p>
+          </div>
+          <div class="hero-stat">
+            <span class="mono">BUILDINGS WITHIN 500 M</span
+            ><strong data-metric="within500pct">94.60<span>%</span></strong
+            ><span>13,424 of 14,191 mapped buildings</span>
+          </div>
+        </div>
+      </section>
+      <div class="inventory" aria-label="Study inventory">
+        <div><strong>14,191</strong><span>building footprints</span></div>
+        <div><strong>148</strong><span>bus-stop records</span></div>
+        <div><strong>4,888</strong><span>road/path features</span></div>
+        <div>
+          <strong>11.668 <small>km²</small></strong
+          ><span>study area</span>
+        </div>
+      </div>
+      <section id="explore" class="explore section-pad" aria-labelledby="explore-title">
+        <div class="section-heading" data-reveal>
+          <div>
+            <p class="eyebrow">02 / LOOK CLOSER</p>
+            <h2 id="explore-title">Every building.<br />Your point of view.</h2>
+          </div>
+          <p>Switch layers. Select a distance band.<br />Tap a building or stop for its details.</p>
+        </div>
+        <div class="atlas-shell" id="atlas-shell">
+          <div class="atlas-toolbar">
+            <span class="mono" id="data-mode">GEOJSON / ALL FEATURES</span>
+            <div>
+              <button id="reset-map" class="small-button">Reset view</button
+              ><button id="expand-map" class="small-button" aria-pressed="false">
+                Expand map ↗
+              </button>
+            </div>
+          </div>
+          <div class="atlas-body">
+            <aside class="map-sidebar" aria-label="Map controls">
+              <details open class="controls-group">
+                <summary>Map layers</summary>
+                <div class="layer-list">
+                  <label
+                    ><input type="checkbox" data-layer="buildings" checked /><span
+                      >Classified buildings</span
+                    ><span class="layer-count">14,191</span></label
+                  >
+                  <label
+                    ><input type="checkbox" data-layer="stops" checked /><span>Bus stops</span
+                    ><span class="layer-count">148</span></label
+                  >
+                  <label
+                    ><input type="checkbox" data-layer="roads" checked /><span>Roads / paths</span
+                    ><span class="layer-count">4,888</span></label
+                  >
+                  <label
+                    ><input type="checkbox" data-layer="coverage" checked /><span
+                      >Combined 500 m coverage</span
+                    ></label
+                  >
+                  <label
+                    ><input type="checkbox" data-layer="ward" checked /><span
+                      >Study boundary</span
+                    ></label
+                  >
+                  <label
+                    ><input type="checkbox" data-layer="buffers" /><span
+                      >Individual 500 m buffers</span
+                    ></label
+                  >
+                  <label
+                    ><input type="checkbox" data-layer="clipped" /><span
+                      >Road portions in coverage</span
+                    ></label
+                  >
+                  <label
+                    ><input type="checkbox" data-layer="counts" /><span
+                      >Nearby buildings per stop</span
+                    ></label
+                  >
+                  <label
+                    ><input type="checkbox" data-layer="points" /><span
+                      >Building representative points</span
+                    ></label
+                  >
+                </div>
+              </details>
+              <fieldset class="band-controls">
+                <legend>Building distance</legend>
+                <button class="band-button active" data-band="all" aria-pressed="true">
+                  All bands <span>14,191</span>
+                </button>
+                <button class="band-button" data-band="Within 300 m" aria-pressed="false">
+                  <i class="swatch green"></i>Within 300 m <span>10,638</span>
+                </button>
+                <button class="band-button" data-band="Over 300 to 500 m" aria-pressed="false">
+                  <i class="swatch amber"></i>Over 300 to 500 m <span>2,786</span>
+                </button>
+                <button class="band-button" data-band="Over 500 m" aria-pressed="false">
+                  <i class="swatch red"></i>Over 500 m <span>767</span>
+                </button>
+              </fieldset>
+              <label class="select-label" for="road-filter">Road/path class</label
+              ><select id="road-filter">
+                <option value="all">All classes</option>
+              </select>
+              <label class="base-toggle"
+                ><input id="basemap-toggle" type="checkbox" checked />Street basemap
+                <span class="micro">OpenStreetMap · enabled</span></label
+              >
+              <p class="micro" id="map-status" role="status">
+                Direct GeoJSON · complete study data
+              </p>
+            </aside>
+            <div class="map-stage">
+              <div
+                id="map"
+                role="region"
+                aria-label="Interactive Katraj building-proximity map"
+              ></div>
+              <div id="map-loading" class="map-notice" role="status">
+                Loading complete study layers…
+              </div>
+              <div class="map-key">
+                <span><i class="dot blue"></i>Stop</span
+                ><span><i class="line-key"></i>Road/path</span
+                ><span><i class="swatch coverage-key"></i>500 m union</span>
+              </div>
+            </div>
+          </div>
+          <div class="atlas-status">
+            <span id="selection-status" role="status">All building distance bands selected.</span
+            ><span class="mono">EPSG:4326 DELIVERY / 32643 ANALYSIS</span>
+          </div>
+          <div class="feature-inspector" id="feature-inspector" aria-live="polite">
+            <span class="mono">FEATURE DETAILS</span>
+            <p>
+              Select a building, stop or road. Use the stop chart below for a keyboard-accessible
+              stop selection.
+            </p>
+          </div>
+        </div>
+        <p class="micro map-caption">
+          All source records retained. Geometry is rendered at the current zoom. Study statistics
+          remain fixed when the map is filtered.
+        </p>
+      </section>
+      <section id="numbers" class="numbers section-pad" aria-labelledby="numbers-title">
+        <div class="section-heading" data-reveal>
+          <div>
+            <p class="eyebrow">03 / THREE DIFFERENT QUESTIONS</p>
+            <h2 id="numbers-title">Close by is not<br />the whole story.</h2>
+          </div>
+          <p>
+            Buildings, land and roads have different denominators.<br />Compare them without mixing
+            them up.
+          </p>
+        </div>
+        <div class="analysis-grid">
+          <article class="chart-panel proximity-panel" data-reveal>
+            <div class="panel-heading">
+              <span class="index mono">01</span>
+              <h3>Where buildings fall</h3>
+              <a class="download-link" href="data/csv/building_proximity.csv" download>CSV ↓</a>
+            </div>
+            <div
+              id="proximity-chart"
+              class="chart"
+              role="img"
+              aria-label="Interactive building counts by distance band"
+            ></div>
+            <p class="chart-hint">Select a bar to filter the map. Hover or tap for values.</p>
+            <div class="chart-actions">
+              <button class="small-button" id="clear-band">Clear selection</button
+              ><a href="#explore" class="text-link">View selection on map ↑</a>
+            </div>
+            <details class="data-table">
+              <summary>View exact values</summary>
+              <div id="proximity-table"></div>
+            </details>
+          </article>
+          <article class="chart-panel coverage-panel" data-reveal>
+            <div class="panel-heading">
+              <span class="index mono">02</span>
+              <h3>Coverage, compared</h3>
+              <a class="download-link" href="data/csv/indicators.csv" download>CSV ↓</a>
+            </div>
+            <div
+              id="coverage-chart"
+              class="chart"
+              role="img"
+              aria-label="Building, land and road coverage percentages"
+            ></div>
+            <ul class="compact-list">
+              <li><strong>Buildings:</strong> 13,424 of 14,191 within 500 m.</li>
+              <li><strong>Land:</strong> 10.344 of 11.668 km² in buffer union.</li>
+              <li><strong>Roads:</strong> 291.241 of 316.721 km in coverage.</li>
+            </ul>
+            <p class="chart-hint">
+              Select a bar to show its map view. Road percentage uses rounded exported lengths.
+            </p>
+            <details class="data-table">
+              <summary>View exact values</summary>
+              <div id="coverage-table"></div>
+            </details>
+          </article>
+        </div>
+        <div class="distance-strip" data-reveal>
+          <div>
+            <span class="eyebrow">MEAN NEAREST-STOP DISTANCE</span
+            ><strong>228.76 <small>m</small></strong>
+          </div>
+          <div>
+            <span class="eyebrow">BEYOND THE 500 M BAND</span
+            ><strong>767 <small>buildings</small></strong>
+          </div>
+          <p>
+            Distance is one part of access.<br />Routes, crossings and service frequency are not
+            measured here.
+          </p>
+        </div>
+        <div class="analysis-grid detail-grid">
+          <article class="chart-panel" data-reveal>
+            <div class="panel-heading">
+              <span class="index mono">03</span>
+              <h3>The mapped network</h3>
+              <a class="download-link" href="data/csv/road_classes.csv" download>CSV ↓</a>
+            </div>
+            <div class="segmented" role="group" aria-label="Road chart measure">
+              <button data-road-measure="length_km" class="active" aria-pressed="true">
+                Length, km</button
+              ><button data-road-measure="feature_count" aria-pressed="false">Feature count</button>
+            </div>
+            <div
+              id="roads-chart"
+              class="chart tall"
+              role="img"
+              aria-label="Interactive road and path classes"
+            ></div>
+            <p class="chart-hint">
+              Select a class to filter roads on the map. All 12 classes are included.
+            </p>
+            <button id="clear-road" class="small-button">Show all road classes</button>
+            <details class="data-table">
+              <summary>View exact values</summary>
+              <div id="roads-table"></div>
+            </details>
+          </article>
+          <article class="chart-panel" data-reveal>
+            <div class="panel-heading">
+              <span class="index mono">04</span>
+              <h3>Stops in context</h3>
+            </div>
+            <label class="select-label" for="stop-search">Find a stop by name or ID</label
+            ><input
+              id="stop-search"
+              type="search"
+              placeholder="Search all 148 records"
+              maxlength="100"
+              autocomplete="off"
+            />
+            <div
+              id="stops-chart"
+              class="chart tall"
+              role="img"
+              aria-label="Nearby-building counts for up to ten matching bus stops"
+            ></div>
+            <p class="chart-hint" id="stop-results">
+              Top 10 by nearby-building count. Select a bar to locate a stop.
+            </p>
+            <p class="micro">
+              Catchments overlap. These counts are not ridership and must not be added as unique
+              buildings.
+            </p>
+            <details class="data-table">
+              <summary>Browse matching stop records</summary>
+              <div id="stops-table"></div>
+            </details>
+          </article>
+        </div>
+      </section>
+      <section id="method" class="method section-pad" aria-labelledby="method-title">
+        <div class="section-heading" data-reveal>
+          <div>
+            <p class="eyebrow">04 / READ THE SMALL PRINT</p>
+            <h2 id="method-title">Measured distance.<br />Not a promise.</h2>
+          </div>
+          <a class="button" href="assets/maps/katraj-map.png" download>Download the map ↗</a>
+        </div>
+        <div class="method-grid">
+          <div class="method-process" data-reveal>
+            <h3>How it works</h3>
+            <ol>
+              <li>
+                <span class="mono">01</span>
+                <div>
+                  <strong>Keep every record</strong>
+                  <p>14,191 buildings, 148 stop records, 4,888 road/path features.</p>
+                </div>
+              </li>
+              <li>
+                <span class="mono">02</span>
+                <div>
+                  <strong>Measure in metres</strong>
+                  <p>2D geometry in WGS 84 / UTM zone 43N. One internal point per building.</p>
+                </div>
+              </li>
+              <li>
+                <span class="mono">03</span>
+                <div>
+                  <strong>Compare and intersect</strong>
+                  <p>
+                    Nearest-stop distance, 500 m buffers, dissolved coverage and road intersections.
+                  </p>
+                </div>
+              </li>
+            </ol>
+          </div>
+          <div class="limits" data-reveal>
+            <h3>What this does not say</h3>
+            <ul>
+              <li>Not walking distance or travel time.</li>
+              <li>Not population served or ridership.</li>
+              <li>No service-frequency or crossing analysis.</li>
+              <li>Outside-ward stops are not included.</li>
+              <li>The boundary is from the 2017 resource.</li>
+              <li>300 m and 500 m are exploratory bands.</li>
+            </ul>
+            <p class="micro">
+              148 stop IDs occupy 144 distinct coordinate locations. Shared coordinates are
+              retained, not assumed to be duplicate records.
+            </p>
+          </div>
+        </div>
+        <details class="sources">
+          <summary>Sources, data and technical notes <span aria-hidden="true">+</span></summary>
+          <div class="sources-grid">
+            <div>
+              <h3>Original sources</h3>
+              <ul>
+                <li>
+                  <a
+                    href="https://data.opencity.in/dataset/pune-bus-stops-and-routes"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    >Bus stops: OpenCity / PMC ↗</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="https://data.opencity.in/dataset/pune-wards-info/resource/686cd9cd-012f-4f97-913f-8c7003b3eb02"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    >Boundary: OpenCity, 2017 ↗</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="https://www.openstreetmap.org/copyright"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    >Buildings and roads: © OpenStreetMap contributors ↗</a
+                  >
+                </li>
+              </ul>
+              <p class="micro">
+                Source download dates and current operational validity were not verified. No claim
+                of real-time transit information.
+              </p>
+            </div>
+            <div>
+              <h3>Take the data</h3>
+              <ul>
+                <li>
+                  <a href="data/geojson/buildings.geojson" download
+                    >All classified buildings, GeoJSON ↓</a
+                  >
+                </li>
+                <li>
+                  <a href="data/geojson/stops.geojson" download
+                    >Stops and nearby-building counts ↓</a
+                  >
+                </li>
+                <li>
+                  <a href="data/geojson/roads.geojson" download>All mapped roads and paths ↓</a>
+                </li>
+                <li>
+                  <a href="data/geojson/coverage.geojson" download>Dissolved ward coverage ↓</a>
+                </li>
+                <li><a href="data/geojson/ward.geojson" download>Study boundary ↓</a></li>
+                <li>
+                  <a href="data/geojson/building-points.geojson" download
+                    >Internal building points ↓</a
+                  >
+                </li>
+                <li>
+                  <a href="data/geojson/buildings-over-500m.geojson" download
+                    >Buildings beyond 500 m ↓</a
+                  >
+                </li>
+                <li>
+                  <a href="data/geojson/stop-buffers.geojson" download>Individual stop buffers ↓</a>
+                </li>
+                <li>
+                  <a href="data/geojson/roads-in-coverage.geojson" download
+                    >Road portions in coverage ↓</a
+                  >
+                </li>
+                <li><a href="data/manifest.json" download>Data manifest and checks ↓</a></li>
+              </ul>
+            </div>
+            <div>
+              <h3>Data transparency</h3>
+              <ul>
+                <li>Statistics use the supplied PostGIS CSV exports.</li>
+                <li>
+                  Static derived geometry was reproduced from the supplied source files and checked
+                  against those exports.
+                </li>
+                <li>Local source-order IDs are not asserted database keys.</li>
+                <li>
+                  All analysis layers load directly from bundled GeoJSON. No GeoServer connection is
+                  required.
+                </li>
+              </ul>
+              <p class="micro">
+                No analytics, cookies or external font requests are added. OpenStreetMap tiles are
+                requested on opening. Analysis geometry loads directly from this website.
+              </p>
+            </div>
+          </div>
+        </details>
+      </section>
+    </main>
+    <footer class="footer">
+      <div>
+        <strong>Vaibhav Nagare</strong>
+        <p>© 2026 Vaibhav Nagare</p>
+      </div>
+      <div class="connect">
+        <span class="mono">LET’S CONNECT</span>
+        <div>
+          <a
+            href="https://github.com/VaibhavNagare-GIS"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Vaibhav Nagare on GitHub"
+            ><img src="assets/icons/github.svg" width="28" height="28" alt="GitHub" /></a
+          ><a
+            href="https://www.linkedin.com/in/vaibhav-nagare-gis"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Vaibhav Nagare on LinkedIn"
+            ><img src="assets/icons/linkedin.svg" width="28" height="28" alt="LinkedIn"
+          /></a>
+        </div>
+      </div>
+    </footer>
+    <div id="app-message" class="app-message" role="status" hidden></div>
+    <noscript
+      ><p class="noscript">
+        Enable JavaScript for the interactive map and charts. The summary, sources and downloadable
+        data remain available.
+      </p></noscript
+    >
+  </body>
+</html>
